@@ -1,8 +1,15 @@
+require 'yaml'
+
 module Greenbrick
   module Storage
-    class Null
-      def initialize
-        @internal = {}
+    class Yaml
+      def initialize( filename )
+        @filename = filename
+        @internal = if File.exists?( filename )
+          YAML.load( File.open( filename ) )
+        else
+          {}
+        end
       end
 
       def keys
@@ -11,6 +18,7 @@ module Greenbrick
 
       def []=(k,v)
         @internal[k] = v
+        store
       end
 
       def [](k)
@@ -29,6 +37,10 @@ module Greenbrick
         @internal.length
       end
 
+    private
+      def store
+        File.open(@filename, "w") {|f| f.write(@internal.to_yaml) }
+      end
     end
   end
 end
