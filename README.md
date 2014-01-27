@@ -1,6 +1,6 @@
 # Greenbrick
 
-TODO: Write a gem description
+This gem provides an abstraction layer over key value stores such as YAML or Redis. The original application is as an application configuration store to migrate from local YAML files to a centralized Redis configuration store.
 
 ## Installation
 
@@ -18,7 +18,21 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+    # store as an in-memory hash
+    app_config = Greenbrick::Config.new Greenbrick::Storage::Null.new
+ 
+    app_config['s3_bucket'] = 'bucket_name' # => 'bucket_name'
+ 
+    app_config['s3_bucket'] # => 'bucket_name'
+ 
+    app_config.each do |k,v|
+      puts "#{k}: #{v}"
+    end
+    # "s3_bucket: bucket_name"
+ 
+    app_config = Greenbrick::Config.new Greenbrick::Storage::Yaml.new( 'config/config.yml' )
+ 
+    app_config = Greenbrick::Config.new( Greenbrick::Storage::Redis.new( 'key' , { host: 'localhost' , port: 123456 } ) )
 
 ## Contributing
 
