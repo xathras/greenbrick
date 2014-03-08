@@ -3,8 +3,11 @@ require 'redis'
 module Greenbrick
   module Storage
     class Redis
+      attr_reader :key_space , :redis_client_options
+
       def initialize( key_space , redis_client_options = {} )
         @key_space = key_space
+        @redis_client_options = redis_client_options
         @client = ::Redis.new redis_client_options
         @cache
       end

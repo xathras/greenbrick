@@ -3,6 +3,8 @@ require 'yaml'
 module Greenbrick
   module Storage
     class Yaml
+      attr_reader :filename
+      
       def initialize( filename )
         @filename = filename
         @internal = if File.exists?( filename )
